@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.8)
-project(robotiq_ft_sensor)
+project(robotiq_ft_sensor_description)
 
 if(CMAKE_COMPILER_IS_GNUCXX OR CMAKE_CXX_COMPILER_ID MATCHES "Clang")
   add_compile_options(-Wall -Wextra -Wpedantic)
@@ -14,16 +14,15 @@ find_package(ament_cmake REQUIRED)
 install(
   DIRECTORY
     # config
-    # launch
-    # rviz
-    # urdf
-    # gazebo
-    # src
-    urdf
-    meshes
-    gazebo
     launch
     rviz
+    urdf
+    gazebo
+    meshes
+    gazebo
+    # srdf
+    # moveit2
+    # src
   DESTINATION
     share/${PROJECT_NAME}
 )

@@ -1,0 +1,96 @@
+<?xml version="1.0"?>
+<!--
+This file shows how to import, instanciate and connect the sensor model to a given link
+-->
+<robot name="test_ft_sensor_gazebo" xmlns:xacro="http://ros.org/wiki/xacro">
+  <xacro:property name="prefix" value=""/>
+  <xacro:property name="sim_gazebo" value="true"/>
+  
+  <!--Import macro for left arm gripper-->
+  <xacro:include filename="$(find robotiq_ft_sensor_description)/urdf/robotiq_ft300.urdf.xacro" />
+  
+  <!--Base frame for reference-->
+  <link name="world" />
+
+  <xacro:robotiq_ft300 parent="world" prefix="" sim_gazebo="true">
+		<origin xyz="0 0 0.3" rpy="1.5707 0 0"/> 
+	</xacro:robotiq_ft300>
+
+  <!-- FORCE REFERENCE FRAME _______________________________________________________________________________
+      As specified in the documentation:
+      - The Z axis passes through the center of the depression with positive direction in the tool direction.
+      - The X axis traces a symmetric line centered on the connector; the positive direction
+          points the opposite way away from the connector.
+      - The Y axis uses the right hand thumb rule according to X-Z. -->
+  <joint name="${prefix}ft300_sensor_joint" type="fixed">
+    <origin xyz="0 0 0" rpy="0 ${pi} ${-pi/2}" />
+    <parent link="${prefix}ft300_sensor" />
+    <child link="${prefix}tip_link" />
+  </joint>
+
+  <xacro:property name="cylinder_radius" value="0.015"/>
+  <xacro:property name="cylinder_length" value="0.06"/>
+  <xacro:property name="cylinder_mass" value="1.0"/>
+  <link name="${prefix}tip_link">
+    <collision>
+      <origin xyz="0 0 ${cylinder_length/2}" rpy="0 0 0"/>
+      <geometry>
+        <cylinder radius="${cylinder_radius}" length="${cylinder_length}"/>
+      </geometry>
+      <material name="tip_link_color">
+        <color rgba="0.2 0.2 0.2 1.0"/>
+      </material>
+      </collision>
+      <visual>
+        <origin xyz="0 0 ${cylinder_length/2}" rpy="0 0 0"/>
+        <geometry>
+          <cylinder radius="${cylinder_radius}" length="${cylinder_length}"/>
+        </geometry>
+        <matertial name="tip_link_color">
+          <color rgba="0.2 0.2 0.6 1.0"/>
+        </matertial>
+      </visual>
+      <inertial>
+        <origin xyz="0 0 ${cylinder_length/2}" rpy="0 0 0"/>
+        <mass value="${cylinder_mass}"/>
+        <inertia
+          ixx="${1/12 * cylinder_mass * (3 * cylinder_radius*cylinder_radius + cylinder_length*cylinder_length)}"
+          ixy="0.0"
+          ixz="0.0"
+          iyy="${1/12 * cylinder_mass * (3 * cylinder_radius*cylinder_radius + cylinder_length*cylinder_length)}"
+          iyz="0.0"
+          izz="${1/2 * cylinder_mass * cylinder_radius*cylinder_radius}"/>      
+      </inertial>
+    </link>
+
+    <xacro:if value="${sim_gazebo}">
+        <gazebo reference="${prefix}ft300_sensor_joint">
+          <disableFixedJointLumping>true</disableFixedJointLumping>
+          <provideFeedback>true</provideFeedback>
+        </gazebo>
+        <!-- gazebo plugin for ft sensor 
+        This is a controller that simulates a 6 dof force and torque sensor on link or joint.
+        For joints, the wrench is reported in the joint child link frame and the
+        measure direction is child-to-parent link. (Force and Torque Feed Back Ground Truth)
+        If <body_name> is specified, the plugin acts as sensor on a link, otherwise if
+        <joint_name> is specified, it acts as a sensor on a joint -->
+        <gazebo>
+            <plugin name="${prefix}gazebo_ros_ft_sensor" filename="libgazebo_ros_ft_sensor.so">
+              <ros>
+                <!-- Add a namespace -->
+                <namespace>/${prefix}robotiq_ft300</namespace>
+                <!-- Remap the default topic -->
+                <!-- <remapping>wrench:=wrench_demo</remapping> -->
+              </ros>
+              <!-- Joint name -->
+              <joint_name>${prefix}ft300_sensor_joint</joint_name>
+              <!-- Update rate in Hz, defaults to 0.0, which means as fast as possible -->
+              <update_rate>50</update_rate>
+              <!-- Standard deviation of the noise to be added to the reported wrench messages. -->
+              <gaussian_noise>0.01</gaussian_noise>
+            </plugin>
+        </gazebo>
+    </xacro:if>
+
+
+</robot>

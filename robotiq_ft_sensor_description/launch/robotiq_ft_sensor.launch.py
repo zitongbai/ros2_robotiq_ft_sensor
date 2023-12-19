@@ -15,7 +15,7 @@ def generate_launch_description():
     declared_arguments.append(
         DeclareLaunchArgument(
             'runtime_config_package',
-            default_value='robotiq_ft_sensor',
+            default_value='robotiq_ft_sensor_description',
             description='Package with the controller\'s configuration in "config" folder. \
                          Usually the argument is not set, it enables use of a custom setup.',
         )
@@ -30,7 +30,7 @@ def generate_launch_description():
     declared_arguments.append(
         DeclareLaunchArgument(
             'description_package',
-            default_value='robotiq_ft_sensor',
+            default_value='robotiq_ft_sensor_description',
             description='Description package with robot URDF/xacro files. Usually the argument \
                          is not set, it enables use of a custom description.',
         )
@@ -38,7 +38,7 @@ def generate_launch_description():
     declared_arguments.append(
         DeclareLaunchArgument(
             'description_file',
-            default_value='test_gazebo.urdf.xacro',
+            default_value='ft300.urdf.xacro',
             description='URDF/XACRO description file with the robot.',
         )
     )
@@ -77,7 +77,7 @@ def generate_launch_description():
     declared_arguments.append(
         DeclareLaunchArgument(
             'start_rviz',
-            default_value='false',
+            default_value='true',
             description='Start RViz2 automatically with this launch file.',
         )
     )

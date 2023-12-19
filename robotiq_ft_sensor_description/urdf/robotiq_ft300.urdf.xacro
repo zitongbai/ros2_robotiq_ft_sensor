@@ -9,7 +9,7 @@
         Example use: 
         ```
             // Import this macro function
-            <xacro:include filename="$(find find robotiq_ft_sensor)/urdf/robotiq_ft300.urdf.xacro" />
+            <xacro:include filename="$(find find robotiq_ft_sensor_description)/urdf/robotiq_ft300.urdf.xacro" />
             
             // Instanciate sensor instance and connect it to robot flange
             <xacro:robotiq_ft300 parent="robot_flange_link" prefix="">
@@ -37,7 +37,7 @@
             <visual>
                 <origin xyz="0 0 0" rpy="0 0 0" />
                 <geometry>
-                    <mesh filename="file://$(find robotiq_ft_sensor)/meshes/visual/robotiq_ft300.STL"/>
+                    <mesh filename="file://$(find robotiq_ft_sensor_description)/meshes/visual/robotiq_ft300.STL"/>
                 </geometry>
                 <material name="Robotiq-Black">
                     <color rgba="0.2 0.2 0.2 1.0"/>
@@ -46,7 +46,7 @@
             <collision>
                 <origin xyz="0 0 0" rpy="0 0 0" />
                 <geometry>
-                    <mesh filename="file://$(find robotiq_ft_sensor)/meshes/collision/robotiq_ft300.STL"/>
+                    <mesh filename="file://$(find robotiq_ft_sensor_description)/meshes/collision/robotiq_ft300.STL"/>
                 </geometry>
             </collision>
         </link>
@@ -56,7 +56,7 @@
             <visual>
                 <origin xyz="0 0 0" rpy="0 0 0" />
                 <geometry>
-                    <mesh filename="file://$(find robotiq_ft_sensor)/meshes/visual/mountings/robotiq_ft300-G-062-COUPLING_G-50-4M6-1D6_20181119.STL"/>
+                    <mesh filename="file://$(find robotiq_ft_sensor_description)/meshes/visual/mountings/robotiq_ft300-G-062-COUPLING_G-50-4M6-1D6_20181119.STL"/>
                 </geometry>
                 <material name="Robotiq-Grey">
                     <color rgba="0.4 0.4 0.4 1.0"/>
@@ -66,7 +66,7 @@
             <collision>
                 <origin xyz="0 0 0" rpy="0 0 0" />
                 <geometry>
-                    <mesh filename="file://$(find robotiq_ft_sensor)/meshes/collision/mountings/robotiq_ft300-G-062-COUPLING_G-50-4M6-1D6_20181119.STL"/>
+                    <mesh filename="file://$(find robotiq_ft_sensor_description)/meshes/collision/mountings/robotiq_ft300-G-062-COUPLING_G-50-4M6-1D6_20181119.STL"/>
                 </geometry>
             </collision>
         </link>
